@@ -1,0 +1,10 @@
+{
+    "name": "jhu9000/external_link_env_sync",
+    "type": "drupal-module",
+    "authors": [
+        {
+            "name": "James Huang",
+            "homepage": "https://github.com/jhu9000"
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+name: External Link Environment Sync
+description: 'Alters external link hostnames to use the same environment-conditional pattern so links stay on the same environment.'
+type: module
+core_version_requirement: ^10 || ^11
+configure: external_link_env_sync.settings

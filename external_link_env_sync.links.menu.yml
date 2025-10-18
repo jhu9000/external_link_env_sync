@@ -1,0 +1,5 @@
+external_link_env_sync.settings:
+  title: external_link_env_sync Settings
+  route_name: external_link_env_sync.settings
+  description: 'Alters external links base url to work for configured environments.'
+  parent: system.admin_config_system

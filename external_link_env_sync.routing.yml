@@ -1,0 +1,7 @@
+external_link_env_sync.settings:
+  path: '/admin/config/system/external_link_env_sync'
+  defaults:
+    _title: 'external_link_env_sync Settings'
+    _form: '\Drupal\external_link_env_sync\Form\SettingsForm'
+  requirements:
+    _permission: 'administer external_link_env_sync'

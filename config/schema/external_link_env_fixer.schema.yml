@@ -1,0 +1,8 @@
+external_link_env_sync.settings:
+  type: config_object
+  label: 'Settings'
+  mapping:
+    condition_pattern:
+      type: text
+    search_replace:
+      type: text
