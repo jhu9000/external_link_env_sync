@@ -1,8 +1,19 @@
 <?php
 
+use Drupal\external_link_env_sync\ExternalLinkEnvSync;
+
 /**
  * Implements hook_entity_view_alter().
  */
 function external_link_env_sync_entity_view_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) : void {
-  $build['#post_render'][] = '\Drupal\external_link_env_sync\EntityViewAlter::postRender';
+  $build['#post_render'][] = '\Drupal\external_link_env_sync\ExternalLinkEnvSync::alter';
+}
+
+/**
+ * Implements hook_link_alter().
+ */
+function external_link_env_sync_link_alter(&$variables) {
+  if (isset($variables['url'])) {
+    $variables['url'] = ExternalLinkEnvSync::alter($variables['url']);
+  }
 }
