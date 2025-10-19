@@ -16,10 +16,10 @@ class EntityViewAlter implements TrustedCallbackInterface {
 
   public static function postRender($html) {
     $config = \Drupal::config('external_link_env_sync.settings');
-    $replace_pattern = self::getEnvPattern(trim($config->get('condition_pattern') ?? ''));
+    $replace_pattern = self::getEnvPattern($config->get('condition_pattern'));
     if (!empty($replace_pattern)) {
       // Build array map of search/replace base urls.
-      $search_replace = self::getSearchReplaceMap(trim($config->get('search_replace') ?? ''));
+      $search_replace = self::getSearchReplaceMap($config->get('search_replace'));
       if (!empty($search_replace)) {
         $changed = FALSE;
         try {
@@ -54,6 +54,11 @@ class EntityViewAlter implements TrustedCallbackInterface {
   }
 
   private static function getEnvPattern($patterns) {
+    static $_pattern;
+    if (isset($_pattern)) {
+      return $_pattern;
+    }
+    $patterns = trim($patterns ?? '');
     if (!empty($patterns)) {
       $list = explode("\n", $patterns);
       foreach ($list as $condition_pattern) {
@@ -63,16 +68,23 @@ class EntityViewAlter implements TrustedCallbackInterface {
           $env_varname = trim(explode('=', $condition)[0] ?? '');
           $env_value = trim(explode('=', $condition)[1] ?? '');
           if (getenv($env_varname) == $env_value) {
+            $_pattern = $pattern;
             return $pattern;
           }
         }
       }
     }
+    $_pattern = '';
     return '';
   }
 
   private static function getSearchReplaceMap($list) {
+    static $_map;
+    if (isset($_map)) {
+      return $_map;
+    }
     $map = [];
+    $list = trim($list ?? '');
     if (!empty($list)) {
       foreach (explode("\n", $list) as $item) {
         $search = trim(explode(',', $item)[0] ?? '');
@@ -82,6 +94,7 @@ class EntityViewAlter implements TrustedCallbackInterface {
         }
       }
     }
+    $_map = $map;
     return $map;
   }
 
