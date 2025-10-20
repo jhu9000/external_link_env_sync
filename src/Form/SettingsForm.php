@@ -39,6 +39,12 @@ class SettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config(static::SETTINGS);
 
+    $form['enabled'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable external_link_env_sync'),
+      '#default_value' => $config->get('enabled'),
+    ];
+
     $form['condition_pattern'] = [
       '#type' => 'textarea',
       '#rows' => 5,
@@ -65,6 +71,7 @@ class SettingsForm extends ConfigFormBase {
    */
   public function settingsKeys() {
     return [
+      'enabled',
       'condition_pattern',
       'search_replace',
     ];

@@ -79,29 +79,30 @@ class ExternalLinkEnvSync implements TrustedCallbackInterface {
   private static function getConfig() : array {
     $replace_pattern = '';
     $search_replace_map = [];
-
     if ($config = \Drupal::config('external_link_env_sync.settings')) {
-      $condition_patterns = trim($config->get('condition_pattern') ?? '');
-      if (!empty($condition_patterns)) {
-        foreach (explode("\n", $condition_patterns) as $condition_pattern) {
-          $condition = trim(explode(',', $condition_pattern)[0] ?? '');
-          $pattern = rtrim(trim(explode(',', $condition_pattern)[1] ?? ''), '/');
-          if (!empty($condition) && !empty($pattern)) {
-            $env_varname = trim(explode('=', $condition)[0] ?? '');
-            $env_value = trim(explode('=', $condition)[1] ?? '');
-            if (getenv($env_varname) == $env_value) {
-              $replace_pattern = $pattern;
+      if ($config->get('enabled')) {
+        $condition_patterns = trim($config->get('condition_pattern') ?? '');
+        if (!empty($condition_patterns)) {
+          foreach (explode("\n", $condition_patterns) as $condition_pattern) {
+            $condition = trim(explode(',', $condition_pattern)[0] ?? '');
+            $pattern = rtrim(trim(explode(',', $condition_pattern)[1] ?? ''), '/');
+            if (!empty($condition) && !empty($pattern)) {
+              $env_varname = trim(explode('=', $condition)[0] ?? '');
+              $env_value = trim(explode('=', $condition)[1] ?? '');
+              if (getenv($env_varname) == $env_value) {
+                $replace_pattern = $pattern;
+              }
             }
           }
         }
-      }
-      $search_replaces = trim($config->get('search_replace') ?? '');
-      if (!empty($search_replaces)) {
-        foreach (explode("\n", $search_replaces) as $search_replace) {
-          $search = trim(explode(',', $search_replace)[0] ?? '');
-          $replace = trim(explode(',', $search_replace)[1] ?? '');
-          if (!empty($search)) {
-            $search_replace_map[$search] = $replace;
+        $search_replaces = trim($config->get('search_replace') ?? '');
+        if (!empty($search_replaces)) {
+          foreach (explode("\n", $search_replaces) as $search_replace) {
+            $search = trim(explode(',', $search_replace)[0] ?? '');
+            $replace = trim(explode(',', $search_replace)[1] ?? '');
+            if (!empty($search)) {
+              $search_replace_map[$search] = $replace;
+            }
           }
         }
       }
